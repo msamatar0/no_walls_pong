@@ -80,19 +80,34 @@ while running:
     player_paddle_top.move_right(5)
     player_paddle_bottom.move_right(5)
 
+  #ai does its best to keep up with the ball
+  ai_paddle_side.rect.y = ball.rect.y + 70
+  if ai_paddle_side.rect.y < 0:
+    ai_paddle_side.rect.y = 0
+  if ai_paddle_side.rect.y > 576 - 170:
+    ai_paddle_side.rect.y = 576 - 170
+
+  ai_paddle_top.rect.x = ball.rect.x + 100
+  ai_paddle_bottom.rect.x = ball.rect.x + 100
+  if ball.rect.x < 576:
+    ai_paddle_top.rect.x = 576
+    ai_paddle_bottom.rect.x = 576
+  if ai_paddle_top.rect.x < 576:
+    ai_paddle_top.rect.x = 576
+    ai_paddle_bottom.rect.x = 576
+  if ai_paddle_top.rect.x > 1024 - 170:
+    ai_paddle_top.rect.x = 1024 - 170
+    ai_paddle_bottom.rect.x = 1024 - 170
   #game logic
   sprites.update()
   
-  #Check if the ball is bouncing against any of the 4 walls:
-  if ball.rect.x > 1014:
-    ball.velocity[0] = -ball.velocity[0]
-  if ball.rect.x < 10:
-    ball.velocity[0] = -ball.velocity[0]
-  if ball.rect.y > 566:
-    ball.velocity[1] = -ball.velocity[1]
-  if ball.rect.y < 10:
-    ball.velocity[1] = -ball.velocity[1] 
-
+  if (pygame.sprite.collide_mask(ball, player_paddle_side) or 
+    pygame.sprite.collide_mask(ball, ai_paddle_side) or 
+    pygame.sprite.collide_mask(ball, player_paddle_top) or  
+    pygame.sprite.collide_mask(ball, ai_paddle_top) or 
+    pygame.sprite.collide_mask(ball, player_paddle_bottom) or 
+    pygame.sprite.collide_mask(ball, ai_paddle_bottom)):
+      ball.bounce()
 
   #drawing objs
   window.fill(BLACK)

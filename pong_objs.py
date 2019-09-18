@@ -13,7 +13,7 @@ class pong_ball(pygame.sprite.Sprite):
     self.image.fill(BLACK)
     self.image.set_colorkey(BLACK)
     pygame.draw.circle(self.image, color, [centerx, centery], radius)
-    self.velocity = [randint(2,4),randint(-8,8)]
+    self.velocity = [randint(-2,8),randint(-4,10)]
     self.rect = self.image.get_rect()
         
   def update(self):
@@ -22,7 +22,7 @@ class pong_ball(pygame.sprite.Sprite):
 
   def bounce(self):
     self.velocity[0] = -self.velocity[0]
-    self.velocity[1] = randint(-8,8)
+    self.velocity[1] = randint(-12,12)
 
 
 class horz_paddle(pygame.sprite.Sprite):
