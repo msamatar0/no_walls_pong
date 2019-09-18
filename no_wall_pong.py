@@ -19,20 +19,42 @@ RIGHT = 'right'
 
 def_font = pygame.font.SysFont(None, 48)
 
-player_paddle = horz_paddle(WHITE, 10, 170)
-ai_paddle = horz_paddle(WHITE, 10, 170)
-player_paddle.rect.x = 20
-player_paddle.rect.y = 210
-ai_paddle.rect.x = window_width - 30
-ai_paddle.rect.y = 210
+player_paddle_side = horz_paddle(WHITE, 10, 170)
+player_paddle_top = vert_paddle(WHITE, 170, 10)
+player_paddle_bottom = vert_paddle(WHITE, 170, 10)
 
-ball = pong_ball(WHITE,10,10)
-ball.rect.x = 345
-ball.rect.y = 195
+ai_paddle_side = horz_paddle(WHITE, 10, 170)
+ai_paddle_top = vert_paddle(WHITE, 170, 10)
+ai_paddle_bottom = vert_paddle(WHITE, 170, 10)
 
+player_paddle_side.rect.x = 20
+player_paddle_side.rect.y = 210
+
+player_paddle_top.rect.x = 196
+player_paddle_top.rect.y = 20
+
+player_paddle_bottom.rect.x = 196
+player_paddle_bottom.rect.y = 546
+
+ai_paddle_side.rect.x = 994
+ai_paddle_side.rect.y = 210
+
+ai_paddle_top.rect.x = 708
+ai_paddle_top.rect.y = 20
+
+ai_paddle_bottom.rect.x = 708
+ai_paddle_bottom.rect.y = 546
+
+ball = pong_ball(WHITE, 512, 288, 6)
+
+#builds a list of all sprites for updating
 sprites = pygame.sprite.Group()
-sprites.add(player_paddle)
-sprites.add(ai_paddle)
+sprites.add(player_paddle_side)
+sprites.add(ai_paddle_side)
+sprites.add(player_paddle_top)
+sprites.add(ai_paddle_top)
+sprites.add(player_paddle_bottom)
+sprites.add(ai_paddle_bottom)
 sprites.add(ball)
 
 #start game
@@ -48,13 +70,28 @@ while running:
   #key pressess
   keys = pygame.key.get_pressed()
   if keys[pygame.K_UP]:
-    player_paddle.move_up(5)
+    player_paddle_side.move_up(5)
   if keys[pygame.K_DOWN]:
-    player_paddle.move_down(5)
+    player_paddle_side.move_down(5)
+  if keys[pygame.K_LEFT]:
+    player_paddle_top.move_left(5)
+    player_paddle_bottom.move_left(5)
+  if keys[pygame.K_RIGHT]:
+    player_paddle_top.move_right(5)
+    player_paddle_bottom.move_right(5)
 
   #game logic
   sprites.update()
-
+  
+  #Check if the ball is bouncing against any of the 4 walls:
+  if ball.rect.x > 1014:
+    ball.velocity[0] = -ball.velocity[0]
+  if ball.rect.x < 10:
+    ball.velocity[0] = -ball.velocity[0]
+  if ball.rect.y > 566:
+    ball.velocity[1] = -ball.velocity[1]
+  if ball.rect.y < 10:
+    ball.velocity[1] = -ball.velocity[1] 
 
 
   #drawing objs
