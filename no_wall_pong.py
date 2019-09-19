@@ -60,6 +60,8 @@ sprites.add(ball)
 #start game
 running = True
 
+scores = score_board()
+
 clock = pygame.time.Clock()
 
 while running:
@@ -87,17 +89,27 @@ while running:
   if ai_paddle_side.rect.y > 576 - 170:
     ai_paddle_side.rect.y = 576 - 170
 
-  ai_paddle_top.rect.x = ball.rect.x + 100
-  ai_paddle_bottom.rect.x = ball.rect.x + 100
-  if ball.rect.x < 576:
-    ai_paddle_top.rect.x = 576
-    ai_paddle_bottom.rect.x = 576
+  ai_paddle_top.rect.x = ball.rect.x
+  ai_paddle_bottom.rect.x = ball.rect.x
+  #if ball.rect.x < 576:
+  #  ai_paddle_top.rect.x = 576
+  #  ai_paddle_bottom.rect.x = 576
   if ai_paddle_top.rect.x < 576:
     ai_paddle_top.rect.x = 576
     ai_paddle_bottom.rect.x = 576
   if ai_paddle_top.rect.x > 1024 - 170:
     ai_paddle_top.rect.x = 1024 - 170
     ai_paddle_bottom.rect.x = 1024 - 170
+
+  if ball.rect.x >= 1024:
+    ball.velocity[0] = -ball.velocity[0]
+  elif ball.rect.x <= 0:
+    ball.velocity[0] = -ball.velocity[0]
+  if ball.rect.y >= 556:
+    ball.velocity[1] = -ball.velocity[1]
+  if ball.rect.y <= 0:
+    ball.velocity[1] = -ball.velocity[1] 
+
   #game logic
   sprites.update()
   
@@ -114,6 +126,7 @@ while running:
   pygame.draw.line(window, WHITE, [window_width / 2, 0], [window_width / 2, window_height], 2)
   sprites.draw(window)
 
+  scores.score_disp(window, 40, 40, 984, 40)
 
   #update screen after drawing
   pygame.display.update()

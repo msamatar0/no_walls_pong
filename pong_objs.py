@@ -1,4 +1,4 @@
-import pygame
+import sys, time, pygame
 from random import randint
 from pygame.locals import *
 
@@ -13,7 +13,7 @@ class pong_ball(pygame.sprite.Sprite):
     self.image.fill(BLACK)
     self.image.set_colorkey(BLACK)
     pygame.draw.circle(self.image, color, [centerx, centery], radius)
-    self.velocity = [randint(-2,8),randint(-4,10)]
+    self.velocity = [randint(4,8),randint(-8,8)]
     self.rect = self.image.get_rect()
         
   def update(self):
@@ -64,3 +64,14 @@ class vert_paddle(pygame.sprite.Sprite):
     if self.rect.x > 342:
       self.rect.x = 342
 
+class score_board():
+  def __init__(self):
+    self.score1 = 0
+    self.score2 = 0
+    self.font = pygame.font.Font(None, 20)
+
+  def score_disp(self, window, x1, y1, x2, y2):
+    self.text1 = self.font.render(str(self.score1), 1, WHITE)
+    self.text2 = self.font.render(str(self.score2), 1, WHITE)
+    window.blit(self.text1, (x1, y1))
+    window.blit(self.text2, (x2, y2))
